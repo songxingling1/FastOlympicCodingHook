@@ -6,6 +6,7 @@ import _thread
 import threading
 import platform
 from os import path
+from os import makedirs
 
 def MakeHandlerClassFromFilename(file_full_path, tests_relative_dir, tests_file_suffix):
     if not tests_file_suffix: tests_file_suffix = "__tests"
@@ -28,6 +29,9 @@ def MakeHandlerClassFromFilename(file_full_path, tests_relative_dir, tests_file_
                 file_name = path.basename(file_full_path)
                 nfilename = path.join(file_relative_dir, tests_relative_dir, file_name + tests_file_suffix) \
                     if tests_relative_dir else path.join(file_relative_dir, file_name + tests_file_suffix)
+                filedirname = path.join(file_relative_dir, tests_relative_dir) \
+                     if tests_relative_dir else file_full_path
+                makedirs(filedirname,0o755,True)
                 print("New test case path: " + nfilename)
                 with open(nfilename, "w") as f:
                     f.write(json.dumps(ntests))
@@ -40,7 +44,7 @@ def MakeHandlerClassFromFilename(file_full_path, tests_relative_dir, tests_file_
 class CompetitiveCompanionServer:
     def startServer(file_full_path, foc_settings):
         host = 'localhost'
-        port = 12345
+        port = 10043
         tests_relative_dir = foc_settings.get("tests_relative_dir")
         tests_file_suffix = foc_settings.get("tests_file_suffix")
         HandlerClass = MakeHandlerClassFromFilename(file_full_path, tests_relative_dir, tests_file_suffix)
