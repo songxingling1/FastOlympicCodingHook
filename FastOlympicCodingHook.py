@@ -50,6 +50,7 @@ class CompetitiveCompanionServer:
         tests_file_suffix = foc_settings.get("tests_file_suffix")
         HandlerClass = MakeHandlerClassFromFilename(file_full_path, tests_relative_dir, tests_file_suffix)
         httpd = HTTPServer((host, port), HandlerClass)
+        sublime.status_message('Start to listening to Competitive Companion')
         httpd.serve_forever()
         print("Server has been shutdown")
 
